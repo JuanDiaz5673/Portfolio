@@ -111,8 +111,8 @@ const projects = [
   {
     name: "Alexa's Fashion",
     slug: "alexasfashion",
-    domain: "alexasfashion.pages.dev",
-    url: "https://alexasfashion.pages.dev",
+    domain: "promocion.alexasfashionnewyork.com",
+    url: "https://promocion.alexasfashionnewyork.com",
     get description() { return getDescription('alexasfashion'); },
     tech: [
       { label: "Node.js", type: "technology" },
