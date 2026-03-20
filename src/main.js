@@ -21,6 +21,9 @@ const i18n = {
     stopInteracting: "Stop interacting",
     showLive: "Show live preview",
     showScreenshot: "Show screenshot",
+    demoAccess: "Demo Access",
+    demoUser: "User:",
+    demoPass: "Pass:",
   },
   es: {
     heroTitle: "Desarrollador Web Full-Stack",
@@ -37,6 +40,9 @@ const i18n = {
     stopInteracting: "Dejar de interactuar",
     showLive: "Mostrar vista en vivo",
     showScreenshot: "Mostrar captura",
+    demoAccess: "Acceso Demo",
+    demoUser: "Usuario:",
+    demoPass: "Clave:",
   },
 };
 
@@ -89,8 +95,10 @@ const projects = [
   {
     name: "Yupi Decoracion",
     slug: "yupidecoracion",
-    url: "https://yupidecoracion.pages.dev",
+    domain: "yupidecoraciones.com",
+    url: "https://yupidecoraciones.com",
     get description() { return getDescription('yupidecoracion'); },
+    demo: { username: "Portfolio", password: "1234" },
     tech: [
       { label: "Express 4", type: "framework" },
       { label: "React 18", type: "framework" },
@@ -103,6 +111,7 @@ const projects = [
   {
     name: "Alexa's Fashion",
     slug: "alexasfashion",
+    domain: "alexasfashion.pages.dev",
     url: "https://alexasfashion.pages.dev",
     get description() { return getDescription('alexasfashion'); },
     tech: [
@@ -114,7 +123,8 @@ const projects = [
   {
     name: "Pollo Inka",
     slug: "polloinka",
-    url: "https://polloinka.pages.dev",
+    domain: "elpolloinkaperu.com",
+    url: "https://elpolloinkaperu.com",
     get description() { return getDescription('polloinka'); },
     tech: [
       { label: "Express 5", type: "framework" },
@@ -126,6 +136,7 @@ const projects = [
   {
     name: "Seba Seba",
     slug: "sebaseba",
+    domain: "sebaseba.pages.dev",
     url: "https://sebaseba.pages.dev",
     get description() { return getDescription('sebaseba'); },
     tech: [
@@ -138,7 +149,8 @@ const projects = [
   {
     name: "Drea's Needleworks",
     slug: "dreasneedleworks",
-    url: "https://dreasneedleworks.pages.dev",
+    domain: "dreasneedleworks.com",
+    url: "https://dreasneedleworks.com",
     get description() { return getDescription('dreasneedleworks'); },
     tech: [
       { label: "HTML", type: "language" },
@@ -292,7 +304,17 @@ function renderProjects() {
     card.className = 'project-card';
     card.style.transitionDelay = `${index * 80}ms`;
 
-    const domain = `${project.slug}.pages.dev`;
+    const domain = project.domain;
+
+    const demoHtml = project.demo ? `
+      <div class="card-demo">
+        <span class="demo-label">${t('demoAccess')}</span>
+        <div class="demo-creds">
+          <span class="demo-cred"><span class="demo-key">${t('demoUser')}</span> ${project.demo.username}</span>
+          <span class="demo-cred"><span class="demo-key">${t('demoPass')}</span> ${project.demo.password}</span>
+        </div>
+      </div>
+    ` : '';
 
     card.innerHTML = `
       <div class="site-preview" data-preview></div>
@@ -310,6 +332,7 @@ function renderProjects() {
           </a>
         </div>
         <p class="card-description">${project.description}</p>
+        ${demoHtml}
         <div class="tech-pills">
           ${project.tech.map(tc => `<span class="tech-pill ${tc.type}">${tc.label}</span>`).join('')}
         </div>
