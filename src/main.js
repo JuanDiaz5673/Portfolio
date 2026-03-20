@@ -387,24 +387,28 @@ function closeModal() {
 /* ═══════════════════════════════════════════
    Letter Scramble Animation (brute-force decode)
    ═══════════════════════════════════════════ */
-const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!?<>{}[]';
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!?<>{}[]~^|/\\';
 
-function scrambleText(element) {
-  // Get only the direct text content (not nested spans)
+// Track active scramble animations so we can cancel them
+let activeScrambles = [];
+
+function scrambleText(element, { resolveInterval = 8, shuffleSpeed = 50, onDone = null } = {}) {
+  // Parse child nodes to preserve nested elements like <span class="accent-text">
   const children = Array.from(element.childNodes);
   const parts = [];
 
   children.forEach((node) => {
     if (node.nodeType === Node.TEXT_NODE) {
-      parts.push({ type: 'text', value: node.textContent, node });
+      parts.push({ type: 'text', value: node.textContent });
     } else if (node.nodeType === Node.ELEMENT_NODE && node.hasAttribute('data-scramble')) {
-      parts.push({ type: 'element', value: node.textContent, node, tag: node.outerHTML.match(/^<[^>]+>/)[0], tagClose: `</${node.tagName.toLowerCase()}>` });
-    } else {
-      parts.push({ type: 'passthrough', node });
+      const openTag = node.outerHTML.match(/^<[^>]+>/)[0];
+      parts.push({ type: 'element', value: node.textContent, tag: openTag, tagClose: `</${node.tagName.toLowerCase()}>` });
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      parts.push({ type: 'passthrough', html: node.outerHTML });
     }
   });
 
-  // Build flat char array with metadata
+  // Build flat char array
   const chars = [];
   parts.forEach((part) => {
     if (part.type === 'text' || part.type === 'element') {
@@ -412,7 +416,7 @@ function scrambleText(element) {
         chars.push({
           target: part.value[i],
           part,
-          resolved: part.value[i] === ' ', // spaces resolve instantly
+          resolved: part.value[i] === ' ',
         });
       }
     }
@@ -420,12 +424,10 @@ function scrambleText(element) {
 
   const totalChars = chars.length;
   let resolvedCount = chars.filter((c) => c.resolved).length;
+  let cancelled = false;
 
-  // Hide element initially, then show with scrambled text
   element.style.visibility = 'visible';
 
-  const SCRAMBLE_SPEED = 30;     // ms between frames
-  const RESOLVE_EVERY = 3;       // resolve a char every N frames
   let frame = 0;
 
   function buildHTML() {
@@ -434,7 +436,7 @@ function scrambleText(element) {
 
     parts.forEach((part) => {
       if (part.type === 'passthrough') {
-        html += part.node.outerHTML || part.node.textContent;
+        html += part.html;
         return;
       }
 
@@ -459,12 +461,92 @@ function scrambleText(element) {
     return html;
   }
 
-  function tick() {
+  let lastTime = 0;
+
+  function tick(timestamp) {
+    if (cancelled) return;
+
+    // Throttle to shuffleSpeed ms between frames
+    if (timestamp - lastTime < shuffleSpeed) {
+      requestAnimationFrame(tick);
+      return;
+    }
+    lastTime = timestamp;
     frame++;
 
-    // Resolve next unresolved char every few frames
-    if (frame % RESOLVE_EVERY === 0 && resolvedCount < totalChars) {
-      // Find next unresolved char (left to right)
+    // Resolve one character every resolveInterval frames
+    if (frame % resolveInterval === 0 && resolvedCount < totalChars) {
+      for (let i = 0; i < chars.length; i++) {
+        if (!chars[i].resolved) {
+          chars[i].resolved = true;
+          resolvedCount++;
+          break;
+        }
+      }
+    }
+
+    element.innerHTML = buildHTML();
+
+    if (resolvedCount < totalChars) {
+      requestAnimationFrame(tick);
+    } else if (onDone) {
+      onDone();
+    }
+  }
+
+  requestAnimationFrame(tick);
+
+  return { cancel: () => { cancelled = true; } };
+}
+
+function scrambleSimpleText(element, text, options = {}) {
+  // For simple elements with just text content (no nested children to preserve)
+  element.textContent = text;
+
+  // Re-parse as simple text nodes
+  const chars = [];
+  for (let i = 0; i < text.length; i++) {
+    chars.push({
+      target: text[i],
+      resolved: text[i] === ' ',
+    });
+  }
+
+  const totalChars = chars.length;
+  let resolvedCount = chars.filter((c) => c.resolved).length;
+  let cancelled = false;
+
+  element.style.visibility = 'visible';
+
+  const resolveInterval = options.resolveInterval || 6;
+  const shuffleSpeed = options.shuffleSpeed || 50;
+  let frame = 0;
+  let lastTime = 0;
+
+  function buildHTML() {
+    let html = '';
+    for (let i = 0; i < chars.length; i++) {
+      const c = chars[i];
+      if (c.resolved) {
+        html += c.target;
+      } else {
+        html += `<span class="scramble-char">${SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]}</span>`;
+      }
+    }
+    return html;
+  }
+
+  function tick(timestamp) {
+    if (cancelled) return;
+
+    if (timestamp - lastTime < shuffleSpeed) {
+      requestAnimationFrame(tick);
+      return;
+    }
+    lastTime = timestamp;
+    frame++;
+
+    if (frame % resolveInterval === 0 && resolvedCount < totalChars) {
       for (let i = 0; i < chars.length; i++) {
         if (!chars[i].resolved) {
           chars[i].resolved = true;
@@ -481,18 +563,47 @@ function scrambleText(element) {
     }
   }
 
-  // Start after a small delay for dramatic effect
-  setTimeout(() => {
-    requestAnimationFrame(tick);
-  }, 300);
+  requestAnimationFrame(tick);
+
+  return { cancel: () => { cancelled = true; } };
 }
 
-function initScrambleAnimation() {
+function runHeroScramble() {
+  // Cancel any running scrambles
+  activeScrambles.forEach((s) => s.cancel());
+  activeScrambles = [];
+
   const heroName = document.querySelector('h1.hero-name[data-scramble]');
+  const heroTitle = document.querySelector('[data-scramble-title]');
+
   if (heroName) {
+    // Restore the original HTML structure before scrambling
+    heroName.innerHTML = `Juan <span class="accent-text" data-scramble>Diaz</span>`;
     heroName.style.visibility = 'hidden';
-    // Start scramble once the hero fade-in animation is partway through
-    setTimeout(() => scrambleText(heroName), 400);
+
+    // Name scramble: slow — resolve every 8 frames, 50ms per shuffle frame
+    setTimeout(() => {
+      const s = scrambleText(heroName, {
+        resolveInterval: 8,
+        shuffleSpeed: 50,
+      });
+      activeScrambles.push(s);
+    }, 400);
+  }
+
+  if (heroTitle) {
+    const titleText = t('heroTitle');
+    heroTitle.textContent = titleText;
+    heroTitle.style.visibility = 'hidden';
+
+    // Title scramble: starts after a delay, slightly faster resolve since it's longer text
+    setTimeout(() => {
+      const s = scrambleSimpleText(heroTitle, titleText, {
+        resolveInterval: 5,
+        shuffleSpeed: 45,
+      });
+      activeScrambles.push(s);
+    }, 900);
   }
 }
 
@@ -570,8 +681,8 @@ function init() {
   // Render projects
   renderProjects();
 
-  // Scramble animation on hero name
-  initScrambleAnimation();
+  // Scramble animation on hero name + title
+  runHeroScramble();
 
   // Typing animation
   initTypingAnimation();
@@ -594,6 +705,8 @@ function init() {
     localStorage.setItem('portfolio-lang', currentLang);
     applyTranslations();
     renderProjects();
+    // Re-trigger scramble on language switch
+    runHeroScramble();
   });
 }
 
