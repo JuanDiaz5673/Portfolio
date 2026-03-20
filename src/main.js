@@ -370,6 +370,15 @@ function openModal(project) {
     <div class="modal-tech-pills">
       ${project.tech.map(t => `<span class="tech-pill ${t.type}">${t.label}</span>`).join('')}
     </div>
+    ${project.demo ? `
+    <div class="card-demo">
+      <span class="demo-label">${t('demoAccess')}</span>
+      <div class="demo-creds">
+        <span class="demo-cred"><span class="demo-key">${t('demoUser')}</span> ${project.demo.username}</span>
+        <span class="demo-cred"><span class="demo-key">${t('demoPass')}</span> ${project.demo.password}</span>
+      </div>
+    </div>
+    ` : ''}
     <div class="modal-actions">
       <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="modal-btn">
         ${icons.externalLink}
