@@ -305,6 +305,15 @@ a { color: inherit; text-decoration: none; }
   50% { opacity: 0; }
 }
 
+/* Scramble animation characters */
+.scramble-char {
+  color: var(--cyan);
+  opacity: 0.6;
+  font-family: var(--font-mono);
+  display: inline;
+  text-shadow: 0 0 8px var(--cyan-glow);
+}
+
 /* Hero Text */
 .hero-name {
   font-family: var(--font-display);
