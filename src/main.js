@@ -557,10 +557,29 @@ function openModal(project) {
   overlay.classList.add('active');
   overlay.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+
+  // Scroll hint arrow — hide when user scrolls near bottom
+  const content = overlay.querySelector('.modal-content');
+  const hint = document.getElementById('modal-scroll-hint');
+  if (hint) hint.classList.remove('hidden');
+  const onScroll = () => {
+    if (content.scrollTop + content.clientHeight >= content.scrollHeight - 40) {
+      hint.classList.add('hidden');
+    } else {
+      hint.classList.remove('hidden');
+    }
+  };
+  content.addEventListener('scroll', onScroll);
+  content._scrollHandler = onScroll;
 }
 
 function closeModal() {
   const overlay = document.getElementById('detail-modal');
+  const content = overlay.querySelector('.modal-content');
+  if (content._scrollHandler) {
+    content.removeEventListener('scroll', content._scrollHandler);
+    delete content._scrollHandler;
+  }
   overlay.classList.remove('active');
   overlay.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
