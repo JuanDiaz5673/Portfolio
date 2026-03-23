@@ -443,6 +443,8 @@ function renderProjects() {
       </div>
     ` : '';
 
+    const indexNum = String(index + 1).padStart(2, '0');
+
     card.innerHTML = `
       <div class="site-preview" data-preview></div>
       <div class="card-body">
@@ -463,6 +465,9 @@ function renderProjects() {
         <div class="tech-pills">
           ${project.tech.map(tc => `<span class="tech-pill ${tc.type}">${tc.label}</span>`).join('')}
         </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-index">${indexNum}</span>
       </div>
     `;
 

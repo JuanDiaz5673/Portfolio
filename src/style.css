@@ -824,6 +824,11 @@ a { color: inherit; text-decoration: none; }
   margin-right: 4px;
 }
 
+/* Card footer (mobile number) */
+.card-footer {
+  display: none;
+}
+
 /* Tech pills */
 .tech-pills {
   display: flex;
@@ -1344,11 +1349,25 @@ a { color: inherit; text-decoration: none; }
   }
 
   .project-card::after {
-    font-size: 56px;
-    right: 16px !important;
-    left: auto !important;
-    bottom: 12px;
-    opacity: 0.7;
+    display: none;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 18px;
+    border-top: 1px solid rgba(212, 168, 83, 0.08);
+    background: rgba(212, 168, 83, 0.02);
+    order: 3;
+  }
+
+  .card-index {
+    font-family: 'Conflict 3040', var(--font-display);
+    font-size: 40px;
+    color: rgba(212, 168, 83, 0.15);
+    line-height: 1;
+    letter-spacing: 4px;
   }
 
   .card-name {
@@ -1504,10 +1523,8 @@ a { color: inherit; text-decoration: none; }
     margin-bottom: 12px;
   }
 
-  .project-card::after {
-    font-size: 44px;
-    right: 14px !important;
-    bottom: 10px;
+  .card-index {
+    font-size: 36px;
   }
 
   /* Modal */
