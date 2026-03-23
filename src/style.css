@@ -519,26 +519,26 @@ a { color: inherit; text-decoration: none; }
 #projects {
   position: relative;
   z-index: 1;
-  padding: 120px 24px;
-  max-width: 1600px;
+  padding: 100px 48px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .projects-grid {
   display: flex;
   flex-direction: column;
-  gap: 120px;
-  max-width: 1600px;
+  gap: 100px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 /* Alternating horizontal offset — zigzag staircase */
 .project-card:nth-child(odd) {
-  margin-right: 16%;
+  margin-right: 10%;
 }
 
 .project-card:nth-child(even) {
-  margin-left: 16%;
+  margin-left: 10%;
 }
 
 /* ─── Project Card (grid: preview + glass info) ─── */
@@ -551,7 +551,7 @@ a { color: inherit; text-decoration: none; }
   transition: all 0.6s var(--ease-out-expo);
   opacity: 0;
   transform: translateY(48px);
-  height: 500px;
+  height: 380px;
 
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -595,7 +595,7 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   bottom: 12px;
   font-family: 'Conflict 3040', var(--font-display);
-  font-size: 100px;
+  font-size: 80px;
   font-weight: normal;
   color: rgba(255, 255, 255, 0.04);
   line-height: 1;
@@ -681,7 +681,7 @@ a { color: inherit; text-decoration: none; }
 /* ─── Card Body (frosted glass) ─── */
 .card-body {
   position: relative;
-  padding: 36px 38px;
+  padding: 28px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -732,7 +732,7 @@ a { color: inherit; text-decoration: none; }
 
 .card-name {
   font-family: var(--font-display);
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text-bright);
   letter-spacing: -0.3px;
@@ -743,9 +743,9 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 5px;
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-muted);
-  margin-top: 4px;
+  margin-top: 3px;
   transition: color 0.3s;
 }
 
@@ -759,8 +759,8 @@ a { color: inherit; text-decoration: none; }
 
 .card-external {
   flex-shrink: 0;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: transparent;
@@ -779,10 +779,10 @@ a { color: inherit; text-decoration: none; }
 }
 
 .card-description {
-  font-size: 17px;
+  font-size: 14px;
   color: var(--text);
-  line-height: 1.7;
-  margin-bottom: 22px;
+  line-height: 1.6;
+  margin-bottom: 16px;
 }
 
 /* Demo credentials */
@@ -797,7 +797,7 @@ a { color: inherit; text-decoration: none; }
 .demo-label {
   display: block;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -812,7 +812,7 @@ a { color: inherit; text-decoration: none; }
 
 .demo-cred {
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 13px;
   color: var(--text-bright);
   letter-spacing: 0.3px;
 }
@@ -832,7 +832,7 @@ a { color: inherit; text-decoration: none; }
 
 .tech-pill {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 500;
   padding: 4px 10px;
   border-radius: 100px;
