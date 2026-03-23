@@ -276,28 +276,7 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 
-/* Subtle radial vignette */
-#hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 50% 45%, transparent 0%, var(--bg) 100%);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Subtle dot pattern */
-#hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(212, 168, 83, 0.08) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: radial-gradient(ellipse 70% 50% at 50% 40%, black 10%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 40%, black 10%, transparent 70%);
-  pointer-events: none;
-  z-index: -1;
-}
+/* Hero background — transparent so particles show through like rest of page */
 
 .hero-content {
   display: flex;
