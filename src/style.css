@@ -1296,11 +1296,12 @@ a { color: inherit; text-decoration: none; }
 /* ═══════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════ */
+/* ─── Tablet ─── */
 @media (max-width: 768px) {
   .side-nav { display: none; }
 
   .projects-grid {
-    gap: 32px;
+    gap: 60px;
   }
 
   .project-card {
@@ -1314,38 +1315,76 @@ a { color: inherit; text-decoration: none; }
 
   .project-card .site-preview {
     order: 1 !important;
-    min-height: 220px;
-    height: 220px;
+    min-height: 240px;
+    height: 240px;
     border-radius: var(--radius) var(--radius) 0 0 !important;
+  }
+
+  .project-card .site-preview iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   .project-card .card-body {
     order: 2 !important;
     border-left: none !important;
     border-right: none !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(212, 168, 83, 0.1);
     border-radius: 0 0 var(--radius) var(--radius) !important;
-  }
-
-  .project-card .card-body {
-    border-radius: 0 0 var(--radius) var(--radius) !important;
+    padding: 24px 22px;
   }
 
   .project-card::after {
-    font-size: 48px;
+    font-size: 56px;
     right: 16px !important;
     left: auto !important;
     bottom: 12px;
+    opacity: 0.7;
+  }
+
+  .card-name {
+    font-size: 22px;
+  }
+
+  .card-description {
+    font-size: 14px;
+    margin-bottom: 14px;
   }
 }
 
+/* ─── Mobile ─── */
 @media (max-width: 640px) {
+  /* Hero */
+  #hero {
+    padding: 40px 20px 80px;
+  }
+
   .hero-name {
-    letter-spacing: -1.5px;
+    font-size: clamp(48px, 14vw, 72px);
+    letter-spacing: -2px;
+  }
+
+  .hero-title {
+    font-size: 12px;
+    letter-spacing: 2px;
   }
 
   .hero-content {
-    gap: 22px;
+    gap: 20px;
+  }
+
+  .hero-eyebrow {
+    gap: 10px;
+  }
+
+  .eyebrow-text {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .eyebrow-line {
+    width: 20px;
   }
 
   .hero-terminal {
@@ -1357,7 +1396,7 @@ a { color: inherit; text-decoration: none; }
   }
 
   .terminal-title {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .terminal-line {
@@ -1368,36 +1407,104 @@ a { color: inherit; text-decoration: none; }
     padding: 14px 14px 18px;
   }
 
-  .hero-title {
-    letter-spacing: 1.5px;
+  .hero-tags {
+    gap: 6px;
   }
 
-  #hero {
-    padding: 40px 16px 80px;
+  .hero-tag {
+    font-size: 10px;
+    padding: 5px 12px;
   }
 
-  #projects, #contact {
-    padding: 80px 16px;
+  .scroll-indicator {
+    bottom: 20px;
+  }
+
+  .scroll-line {
+    height: 28px;
+  }
+
+  .scroll-text {
+    font-size: 8px;
+  }
+
+  /* Projects */
+  #projects {
+    padding: 60px 16px;
   }
 
   .section-header {
-    margin-bottom: 40px;
+    margin-bottom: 36px;
   }
 
-  .card-body {
-    padding: 18px;
+  .section-title {
+    font-size: clamp(26px, 7vw, 36px);
+  }
+
+  .projects-grid {
+    gap: 48px;
+  }
+
+  .project-card .site-preview {
+    min-height: 200px;
+    height: 200px;
+  }
+
+  .project-card .card-body {
+    padding: 20px 18px;
   }
 
   .card-name {
-    font-size: 15px;
+    font-size: 20px;
+  }
+
+  .card-domain {
+    font-size: 11px;
   }
 
   .card-description {
+    font-size: 13px;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .card-header {
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .card-external {
+    width: 30px;
+    height: 30px;
+  }
+
+  .tech-pill {
+    font-size: 10px;
+    padding: 3px 9px;
+  }
+
+  .demo-label {
+    font-size: 9px;
+  }
+
+  .demo-cred {
     font-size: 12px;
   }
 
+  .card-demo {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+  }
+
+  .project-card::after {
+    font-size: 44px;
+    right: 14px !important;
+    bottom: 10px;
+  }
+
+  /* Modal */
   .modal-overlay {
-    padding: 12px;
+    padding: 8px;
   }
 
   .modal-content {
@@ -1407,73 +1514,145 @@ a { color: inherit; text-decoration: none; }
   }
 
   .modal-preview {
-    height: 35vh;
-    min-height: 200px;
+    height: 30vh;
+    min-height: 180px;
     flex-shrink: 0;
   }
 
   .modal-info {
-    padding: 18px;
+    padding: 20px 18px 24px;
+  }
+
+  .modal-header-row {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 14px;
   }
 
   .modal-project-name {
-    font-size: 18px;
+    font-size: 22px;
   }
 
-  .modal-description {
+  .modal-domain {
+    font-size: 11px;
+  }
+
+  .modal-btn {
+    align-self: flex-start;
+    font-size: 12px;
+    padding: 10px 20px;
+  }
+
+  .modal-tech-pills {
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .modal-detailed {
+    padding-top: 16px;
+  }
+
+  .modal-detailed-summary {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  .modal-highlights li {
     font-size: 13px;
+    padding-left: 16px;
+    line-height: 1.5;
   }
 
-  .modal-actions {
-    flex-direction: column;
+  .modal-highlights li::before {
+    width: 5px;
+    height: 5px;
+    top: 8px;
+  }
+
+  .modal-highlights {
+    gap: 8px;
   }
 
   .modal-close {
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     width: 32px;
     height: 32px;
+    font-size: 18px;
   }
 
   .stop-interact {
-    right: 50px;
-    top: 10px;
+    right: 48px;
+    top: 8px;
+    font-size: 10px;
+    padding: 6px 12px;
+  }
+
+  /* Contact */
+  #contact {
+    padding: 60px 16px;
   }
 
   .contact-cards {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .contact-card {
-    padding: 28px 16px;
+    padding: 24px 16px;
+  }
+
+  .contact-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .contact-label {
+    font-size: 9px;
   }
 
   .contact-value {
     font-size: 14px;
   }
 
-  .lang-toggle {
-    top: 16px;
-    right: 16px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .scroll-indicator {
-    bottom: 24px;
-  }
-
+  /* Footer */
   .footer-inner {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     text-align: center;
+  }
+
+  .footer-name {
+    font-size: 13px;
+  }
+
+  .footer-status {
+    font-size: 10px;
+  }
+
+  /* Lang toggle */
+  .lang-toggle {
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .lang-flag {
+    font-size: 10px;
   }
 }
 
-/* Extra small screens */
-@media (max-width: 360px) {
+/* ─── Extra small screens (iPhone SE, etc.) ─── */
+@media (max-width: 375px) {
   .hero-name {
     font-size: 44px;
+    letter-spacing: -1.5px;
+  }
+
+  .hero-title {
+    font-size: 11px;
+    letter-spacing: 1.5px;
   }
 
   .terminal-line {
@@ -1481,17 +1660,25 @@ a { color: inherit; text-decoration: none; }
     gap: 6px;
   }
 
-  .hero-tags {
-    gap: 6px;
-  }
-
   .hero-tag {
-    font-size: 10px;
+    font-size: 9px;
     padding: 4px 10px;
   }
 
   .section-title {
     font-size: 24px;
+  }
+
+  .card-name {
+    font-size: 18px;
+  }
+
+  .card-description {
+    font-size: 12px;
+  }
+
+  .modal-project-name {
+    font-size: 20px;
   }
 }
 
