@@ -7,7 +7,7 @@
     <meta name="description" content="Portfolio of Juan Diaz — Full-Stack Web Developer building modern web experiences." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
     <script type="module" src="/src/main.js"></script>
   </head>
@@ -17,32 +17,47 @@
       <span class="lang-flag">ES</span>
     </button>
 
-    <!-- Scanline overlay -->
-    <div class="scanlines" aria-hidden="true"></div>
+    <!-- Floating side navigation -->
+    <nav class="side-nav" aria-label="Section navigation">
+      <a href="#hero" class="side-nav-dot active" data-section="hero"><span>Top</span></a>
+      <a href="#projects" class="side-nav-dot" data-section="projects"><span>Projects</span></a>
+      <a href="#contact" class="side-nav-dot" data-section="contact"><span>Contact</span></a>
+    </nav>
 
-    <!-- Floating grid background -->
-    <div class="grid-bg" aria-hidden="true"></div>
+    <!-- Particle canvas background -->
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+    <!-- Grain overlay -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- Cursor glow orb (hero only) -->
+    <div id="cursor-orb" class="cursor-orb" aria-hidden="true"></div>
 
     <!-- ═══════════════ HERO ═══════════════ -->
     <section id="hero">
       <div class="hero-content">
-        <div class="terminal-window">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-line"></span>
+          <span class="eyebrow-text">portfolio / 2026</span>
+          <span class="eyebrow-line"></span>
+        </div>
+        <h1 class="hero-name" data-scramble>Juan <span class="accent-text" data-scramble>Diaz</span></h1>
+        <p class="hero-title" data-i18n="heroTitle" data-scramble-title>Full-Stack Web Developer</p>
+        <div class="hero-terminal">
           <div class="terminal-bar">
             <span class="terminal-dot red"></span>
             <span class="terminal-dot yellow"></span>
             <span class="terminal-dot green"></span>
-            <span class="terminal-title">juan@portfolio ~ $</span>
+            <span class="terminal-title">~/portfolio</span>
           </div>
           <div class="terminal-body">
             <div class="terminal-line">
-              <span class="prompt">&gt;</span>
+              <span class="prompt">$</span>
               <span id="typed-text" class="typed"></span>
               <span class="cursor">_</span>
             </div>
           </div>
         </div>
-        <h1 class="hero-name" data-scramble>Juan <span class="accent-text" data-scramble>Diaz</span></h1>
-        <p class="hero-title" data-i18n="heroTitle" data-scramble-title>Full-Stack Web Developer</p>
         <div class="hero-tags">
           <span class="hero-tag">JavaScript</span>
           <span class="hero-tag">React</span>
@@ -52,9 +67,8 @@
         </div>
       </div>
       <a href="#projects" class="scroll-indicator" aria-label="Scroll to projects">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
-        </svg>
+        <div class="scroll-line"></div>
+        <span class="scroll-text" data-i18n="scrollText">scroll</span>
       </a>
     </section>
 
@@ -115,10 +129,15 @@
 
     <!-- ═══════════════ FOOTER ═══════════════ -->
     <footer id="footer">
-      <div class="footer-line"></div>
-      <p class="footer-text">
-        <span data-i18n="builtBy">Built by</span> <span class="accent-text">Juan Diaz</span> &copy; <span id="year"></span>
-      </p>
+      <div class="footer-inner">
+        <div class="footer-left">
+          <span class="footer-name">Juan Diaz</span>
+          <span class="footer-copy">&copy; <span id="year"></span></span>
+        </div>
+        <div class="footer-right">
+          <span class="footer-status"><span class="status-dot"></span><span data-i18n="availableForWork">Available for work</span></span>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

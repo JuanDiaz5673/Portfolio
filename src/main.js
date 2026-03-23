@@ -24,6 +24,8 @@ const i18n = {
     demoAccess: "Demo Access",
     demoUser: "User:",
     demoPass: "Pass:",
+    scrollText: "scroll",
+    availableForWork: "Available for work",
   },
   es: {
     heroTitle: "Desarrollador Web Full-Stack",
@@ -43,23 +45,132 @@ const i18n = {
     demoAccess: "Acceso Demo",
     demoUser: "Usuario:",
     demoPass: "Clave:",
+    scrollText: "desplazar",
+    availableForWork: "Disponible para trabajar",
   },
 };
 
 const projectDescriptions = {
   en: {
-    yupidecoracion: "E-commerce platform for home decorations featuring OCR-powered product recognition and secure user authentication.",
-    alexasfashion: "Fashion brand website with automated content management powered by Puppeteer for dynamic product updates.",
-    polloinka: "Restaurant website for a Peruvian chicken eatery showcasing the menu, location, and brand story.",
-    sebaseba: "Professional business website for a local service provider with a clean, modern single-page layout.",
-    dreasneedleworks: "Handcrafted business website for a needlework artisan featuring custom typography and a warm brand identity.",
+    yupidecoracion: "Full-stack inventory management system for a balloon decoration business with role-based access and OCR scanning.",
+    alexasfashion: "Bilingual fashion brand website for a New York clothing store with animated promotions and catalog downloads.",
+    polloinka: "Bilingual restaurant website for a Peruvian rotisserie chain in Queens with a full interactive menu system.",
+    sebaseba: "Bilingual website for a Colombian bakery & restaurant in Queens celebrating 35+ years of traditional recipes.",
+    dreasneedleworks: "Elegant portfolio website for a handcraft artisan specializing in custom embroidery and personalized bows.",
   },
   es: {
-    yupidecoracion: "Plataforma de comercio electronico para decoraciones del hogar con reconocimiento de productos por OCR y autenticacion segura.",
-    alexasfashion: "Sitio web de moda con gestion de contenido automatizada impulsada por Puppeteer para actualizaciones dinamicas de productos.",
-    polloinka: "Sitio web de restaurante para una polleria peruana que muestra el menu, la ubicacion y la historia de la marca.",
-    sebaseba: "Sitio web profesional para un proveedor de servicios local con un diseno limpio y moderno de una sola pagina.",
-    dreasneedleworks: "Sitio web artesanal para una artesana de costura con tipografia personalizada y una identidad de marca calida.",
+    yupidecoracion: "Sistema de inventario full-stack para un negocio de decoraciones con globos con acceso por roles y escaneo OCR.",
+    alexasfashion: "Sitio web bilingue de moda para una tienda de ropa en Nueva York con promociones animadas y descarga de catalogos.",
+    polloinka: "Sitio web bilingue de restaurante para una cadena de pollerias peruanas en Queens con menu interactivo completo.",
+    sebaseba: "Sitio web bilingue para una panaderia y restaurante colombiano en Queens celebrando 35+ anos de recetas tradicionales.",
+    dreasneedleworks: "Sitio web elegante para una artesana de manualidades especializada en bordado personalizado y lazos artesanales.",
+  },
+};
+
+const projectDetails = {
+  en: {
+    yupidecoracion: {
+      summary: "Built a full-stack inventory management system from scratch for my mother's balloon decoration business, running on a home server behind a Cloudflare tunnel.",
+      highlights: [
+        "Custom auth with HMAC-SHA256 tokens and role-based access (owner vs. read-only demo)",
+        "Tesseract.js OCR integration for scanning product labels",
+        "Smart color search that understands Spanish synonyms (e.g. 'rojo' finds all red variants)",
+        "SQLite database tracking balloons by color, shape, size, material, and finish",
+        "Security hardening with rate limiting, Helmet headers, and CORS restrictions",
+      ],
+    },
+    alexasfashion: {
+      summary: "Designed a promotional website for a women's fashion boutique in New York — built with zero frameworks to keep it lightweight and fast.",
+      highlights: [
+        "Bilingual interface with full English/Spanish toggle",
+        "Animated promo bar with CSS shimmer effects and scroll-triggered animations",
+        "Integrated PDF catalog downloads for customers",
+        "Puppeteer backend for automated product page screenshot generation",
+        "Elegant typography pairing Bebas Neue, Playfair Display, and Cormorant Garamond",
+      ],
+    },
+    polloinka: {
+      summary: "Created a fully bilingual website for an authentic Peruvian rotisserie restaurant with three Queens, NY locations.",
+      highlights: [
+        "Custom i18n system with 100+ translation keys covering the entire site",
+        "Interactive menu across 6 categories with authentic Peruvian dish descriptions",
+        "Smooth scroll navigation with active link highlighting",
+        "Mobile-responsive hamburger menu and contact form with validation",
+        "Express.js server with SPA fallback routing",
+      ],
+    },
+    sebaseba: {
+      summary: "Developed a bilingual website for a beloved Colombian bakery and restaurant serving Jackson Heights and Corona since 1987.",
+      highlights: [
+        "Dual navigation system — top nav plus sticky bottom bar for mobile with synced active states",
+        "Extensive menu covering 7 categories of authentic Colombian cuisine",
+        "CSS grain texture overlay on hero for a rustic, warm aesthetic",
+        "Full English/Spanish i18n across all content",
+        "Contact form with success feedback animation",
+      ],
+    },
+    dreasneedleworks: {
+      summary: "Crafted an elegant single-page portfolio for a handcraft artisan specializing in custom embroidery and personalized bows.",
+      highlights: [
+        "Refined blush, taupe, and cream palette with linen texture via CSS gradients",
+        "Typography pairing Cormorant Garamond with Jost for artisanal feel",
+        "hCaptcha integration on contact form for spam protection",
+        "Backdrop blur navigation with scroll-based active link highlighting",
+        "Fully responsive with professional product photography gallery",
+      ],
+    },
+  },
+  es: {
+    yupidecoracion: {
+      summary: "Construi un sistema de inventario full-stack desde cero para el negocio de decoraciones con globos de mi madre, corriendo en un servidor casero detras de un tunel Cloudflare.",
+      highlights: [
+        "Autenticacion personalizada con tokens HMAC-SHA256 y acceso por roles (duena vs. demo solo lectura)",
+        "Integracion de OCR con Tesseract.js para escanear etiquetas de productos",
+        "Busqueda inteligente por color que entiende sinonimos en espanol (ej. 'rojo' encuentra todas las variantes rojas)",
+        "Base de datos SQLite rastreando globos por color, forma, tamano, material y acabado",
+        "Seguridad con limitacion de intentos, cabeceras Helmet y restricciones CORS",
+      ],
+    },
+    alexasfashion: {
+      summary: "Disene un sitio web promocional para una boutique de moda femenina en Nueva York — construido sin frameworks para mantenerlo liviano y rapido.",
+      highlights: [
+        "Interfaz bilingue con alternancia completa ingles/espanol",
+        "Barra promocional animada con efectos shimmer CSS y animaciones por scroll",
+        "Descargas integradas de catalogos PDF para clientes",
+        "Backend con Puppeteer para generacion automatizada de capturas de productos",
+        "Tipografia elegante combinando Bebas Neue, Playfair Display y Cormorant Garamond",
+      ],
+    },
+    polloinka: {
+      summary: "Cree un sitio web completamente bilingue para un restaurante autentico de pollo a la brasa peruano con tres ubicaciones en Queens, NY.",
+      highlights: [
+        "Sistema i18n personalizado con mas de 100 claves de traduccion",
+        "Menu interactivo en 6 categorias con descripciones autenticas peruanas",
+        "Navegacion suave con resaltado de enlaces activos",
+        "Menu hamburguesa responsive y formulario de contacto con validacion",
+        "Servidor Express.js con enrutamiento SPA",
+      ],
+    },
+    sebaseba: {
+      summary: "Desarrolle un sitio web bilingue para una querida panaderia y restaurante colombiano sirviendo a Jackson Heights y Corona desde 1987.",
+      highlights: [
+        "Sistema de doble navegacion — barra superior mas barra inferior fija para movil con estados activos sincronizados",
+        "Menu extenso cubriendo 7 categorias de cocina colombiana autentica",
+        "Textura de grano CSS sobre el hero para una estetica rustica y calida",
+        "i18n completo en ingles/espanol en todo el contenido",
+        "Formulario de contacto con animacion de confirmacion",
+      ],
+    },
+    dreasneedleworks: {
+      summary: "Elabore un elegante portafolio de una pagina para una artesana especializada en bordado personalizado y lazos artesanales.",
+      highlights: [
+        "Paleta refinada de rubor, topo y crema con textura de lino via gradientes CSS",
+        "Tipografia combinando Cormorant Garamond con Jost para un estilo artesanal",
+        "Integracion de hCaptcha en formulario de contacto contra spam",
+        "Navegacion con desenfoque y resaltado de enlaces activos por scroll",
+        "Totalmente responsive con galeria profesional de fotografia de productos",
+      ],
+    },
   },
 };
 
@@ -69,6 +180,11 @@ function t(key) {
 
 function getDescription(slug) {
   return projectDescriptions[currentLang][slug] || projectDescriptions.en[slug];
+}
+
+function getDetailedDescription(slug) {
+  const details = projectDetails[currentLang][slug] || projectDetails.en[slug];
+  return details;
 }
 
 function applyTranslations() {
@@ -186,9 +302,16 @@ function createSitePreview(project, container, { scrollable = false, maxHeight =
         <img src="/thumbnails/${project.slug}.png" alt="Preview of ${project.name}" loading="lazy" />
       `;
     } else {
-      const iframeHeight = scrollable && state.containerHeight && state.scale
-        ? Math.round(state.containerHeight / state.scale)
-        : IFRAME_H;
+      // For card previews, scale iframe height to fill the container
+      const isInCard = container.closest('.project-card');
+      let iframeHeight;
+      if (scrollable && state.containerHeight && state.scale) {
+        iframeHeight = Math.round(state.containerHeight / state.scale);
+      } else if (isInCard && state.containerHeight && state.scale) {
+        iframeHeight = Math.round(state.containerHeight / state.scale);
+      } else {
+        iframeHeight = IFRAME_H;
+      }
       const pointerEvents = (scrollable && state.interacting) ? 'auto' : 'none';
       const scrolling = (scrollable && state.interacting) ? 'auto' : 'no';
       const overflow = (scrollable && state.interacting) ? 'auto' : 'hidden';
@@ -272,8 +395,11 @@ function createSitePreview(project, container, { scrollable = false, maxHeight =
       state.containerHeight = newContainerHeight;
 
       if (!scrollable) {
-        const scaledHeight = newIsMobile ? 200 : Math.min(Math.round(IFRAME_H * newScale), maxHeight);
-        container.style.height = scaledHeight + 'px';
+        // In card layout, don't override height — CSS handles it
+        if (!container.closest('.project-card')) {
+          const scaledHeight = newIsMobile ? 200 : Math.min(Math.round(IFRAME_H * newScale), maxHeight);
+          container.style.height = scaledHeight + 'px';
+        }
       }
 
       render();
@@ -302,7 +428,8 @@ function renderProjects() {
   projects.forEach((project, index) => {
     const card = document.createElement('div');
     card.className = 'project-card';
-    card.style.transitionDelay = `${index * 80}ms`;
+    card.style.transitionDelay = `${index * 120}ms`;
+    card.setAttribute('data-index', String(index + 1).padStart(2, '0'));
 
     const domain = project.domain;
 
@@ -364,9 +491,18 @@ function openModal(project) {
   const info = document.getElementById('modal-info');
 
   // Render info
+  const detailedDesc = getDetailedDescription(project.slug);
   info.innerHTML = `
-    <div class="modal-project-name">${project.name}</div>
-    <p class="modal-description">${project.description}</p>
+    <div class="modal-header-row">
+      <div>
+        <div class="modal-project-name">${project.name}</div>
+        <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="modal-domain">${project.domain} ${icons.arrowUpRight}</a>
+      </div>
+      <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="modal-btn">
+        ${icons.externalLink}
+        ${t('visitSite')}
+      </a>
+    </div>
     <div class="modal-tech-pills">
       ${project.tech.map(t => `<span class="tech-pill ${t.type}">${t.label}</span>`).join('')}
     </div>
@@ -379,11 +515,11 @@ function openModal(project) {
       </div>
     </div>
     ` : ''}
-    <div class="modal-actions">
-      <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="modal-btn">
-        ${icons.externalLink}
-        ${t('visitSite')}
-      </a>
+    <div class="modal-detailed">
+      <p class="modal-detailed-summary">${detailedDesc.summary}</p>
+      <ul class="modal-highlights">
+        ${detailedDesc.highlights.map(h => `<li>${h}</li>`).join('')}
+      </ul>
     </div>
   `;
 
@@ -731,6 +867,15 @@ function init() {
     if (e.key === 'Escape') closeModal();
   });
 
+  // Particle background
+  initParticles();
+
+  // Cursor orb
+  initCursorOrb();
+
+  // Side nav
+  initSideNav();
+
   // Language toggle
   document.getElementById('lang-toggle').addEventListener('click', () => {
     currentLang = currentLang === 'en' ? 'es' : 'en';
@@ -739,6 +884,178 @@ function init() {
     renderProjects();
     // Re-trigger scramble on language switch
     runHeroScramble();
+  });
+}
+
+/* ═══════════════════════════════════════════
+   Particle Constellation Background
+   ═══════════════════════════════════════════ */
+function initParticles() {
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let width, height, particles, animId;
+  const PARTICLE_COUNT = 60;
+  const CONNECTION_DIST = 150;
+  const MOUSE_DIST = 200;
+  let mouse = { x: -9999, y: -9999 };
+
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+
+  function createParticles() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.4 + 0.1,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < CONNECTION_DIST) {
+          const alpha = (1 - dist / CONNECTION_DIST) * 0.08;
+          ctx.strokeStyle = `rgba(212, 168, 83, ${alpha})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+
+      // Mouse connection
+      const mdx = particles[i].x - mouse.x;
+      const mdy = particles[i].y - mouse.y;
+      const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+      if (mDist < MOUSE_DIST) {
+        const alpha = (1 - mDist / MOUSE_DIST) * 0.15;
+        ctx.strokeStyle = `rgba(212, 168, 83, ${alpha})`;
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.stroke();
+      }
+    }
+
+    // Draw particles
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(212, 168, 83, ${p.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  function update() {
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      // Wrap around edges
+      if (p.x < -10) p.x = width + 10;
+      if (p.x > width + 10) p.x = -10;
+      if (p.y < -10) p.y = height + 10;
+      if (p.y > height + 10) p.y = -10;
+    }
+  }
+
+  function animate() {
+    update();
+    draw();
+    animId = requestAnimationFrame(animate);
+  }
+
+  resize();
+  createParticles();
+  animate();
+
+  window.addEventListener('resize', () => {
+    resize();
+    createParticles();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  document.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+}
+
+/* ═══════════════════════════════════════════
+   Cursor Orb (hero section)
+   ═══════════════════════════════════════════ */
+function initCursorOrb() {
+  const orb = document.getElementById('cursor-orb');
+  const hero = document.getElementById('hero');
+  if (!orb || !hero) return;
+
+  let orbX = 0, orbY = 0;
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  let isInHero = true;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    const heroRect = hero.getBoundingClientRect();
+    isInHero = e.clientY >= heroRect.top && e.clientY <= heroRect.bottom;
+  });
+
+  function animate() {
+    orbX += (mouseX - orbX) * 0.08;
+    orbY += (mouseY - orbY) * 0.08;
+    orb.style.transform = `translate(${orbX - 200}px, ${orbY - 200}px)`;
+    orb.style.opacity = isInHero ? '1' : '0';
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+/* ═══════════════════════════════════════════
+   Side Navigation Active State
+   ═══════════════════════════════════════════ */
+function initSideNav() {
+  const dots = document.querySelectorAll('.side-nav-dot');
+  const sections = ['hero', 'projects', 'contact'];
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          dots.forEach((d) => d.classList.remove('active'));
+          const dot = document.querySelector(`.side-nav-dot[data-section="${entry.target.id}"]`);
+          if (dot) dot.classList.add('active');
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  sections.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
   });
 }
 
