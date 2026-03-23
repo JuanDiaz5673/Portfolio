@@ -641,6 +641,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 .site-preview iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
   border: none;
   transform-origin: top left;
 }
