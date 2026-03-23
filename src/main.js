@@ -123,8 +123,8 @@ const projects = [
   {
     name: "Pollo Inka",
     slug: "polloinka",
-    domain: "elpolloinkaperu.com",
-    url: "https://elpolloinkaperu.com",
+    domain: "polloinka.pages.dev",
+    url: "https://polloinka.pages.dev",
     get description() { return getDescription('polloinka'); },
     tech: [
       { label: "Express 5", type: "framework" },
