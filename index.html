@@ -82,7 +82,16 @@
         </div>
       </div>
       <a href="#about" class="scroll-indicator" aria-label="Scroll down">
-        <svg class="scroll-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="scroll-arrows">
+          <svg width="20" height="12" viewBox="0 0 24 14" fill="none" stroke="url(#arrowGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <defs><linearGradient id="arrowGrad" x1="12" y1="0" x2="12" y2="14" gradientUnits="userSpaceOnUse"><stop stop-color="#d4a853"/><stop offset="1" stop-color="#d4a853" stop-opacity="0"/></linearGradient></defs>
+            <polyline points="4 2 12 10 20 2"/>
+          </svg>
+          <svg width="20" height="12" viewBox="0 0 24 14" fill="none" stroke="url(#arrowGrad2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <defs><linearGradient id="arrowGrad2" x1="12" y1="0" x2="12" y2="14" gradientUnits="userSpaceOnUse"><stop stop-color="#d4a853" stop-opacity="0.7"/><stop offset="1" stop-color="#d4a853" stop-opacity="0"/></linearGradient></defs>
+            <polyline points="4 2 12 10 20 2"/>
+          </svg>
+        </div>
         <span class="scroll-text" data-i18n="scrollText">scroll</span>
       </a>
     </section>
