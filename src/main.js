@@ -198,13 +198,8 @@ function t(key) {
   return i18n[currentLang][key] || i18n.en[key] || key;
 }
 
-function getDescription(slug) {
-  return projectDescriptions[currentLang][slug] || projectDescriptions.en[slug];
-}
-
-function getDetailedDescription(slug) {
-  const details = projectDetails[currentLang][slug] || projectDetails.en[slug];
-  return details;
+function getLocalized(source, slug) {
+  return source[currentLang][slug] || source.en[slug];
 }
 
 function applyTranslations() {
@@ -233,7 +228,7 @@ const projects = [
     slug: "yupidecoracion",
     domain: "yupidecoraciones.com",
     url: "https://yupidecoraciones.com",
-    get description() { return getDescription('yupidecoracion'); },
+    get description() { return getLocalized(projectDescriptions, 'yupidecoracion'); },
     demo: { username: "Portfolio", password: "1234" },
     tech: [
       { label: "Express 4", type: "framework" },
@@ -249,7 +244,7 @@ const projects = [
     slug: "alexasfashion",
     domain: "promocion.alexasfashionnewyork.com",
     url: "https://promocion.alexasfashionnewyork.com",
-    get description() { return getDescription('alexasfashion'); },
+    get description() { return getLocalized(projectDescriptions, 'alexasfashion'); },
     tech: [
       { label: "Node.js", type: "technology" },
       { label: "Puppeteer", type: "technology" },
@@ -261,7 +256,7 @@ const projects = [
     slug: "polloinka",
     domain: "polloinka.pages.dev",
     url: "https://polloinka.pages.dev",
-    get description() { return getDescription('polloinka'); },
+    get description() { return getLocalized(projectDescriptions, 'polloinka'); },
     tech: [
       { label: "Express 5", type: "framework" },
       { label: "JavaScript", type: "language" },
@@ -274,7 +269,7 @@ const projects = [
     slug: "sebaseba",
     domain: "sebaseba.pages.dev",
     url: "https://sebaseba.pages.dev",
-    get description() { return getDescription('sebaseba'); },
+    get description() { return getLocalized(projectDescriptions, 'sebaseba'); },
     tech: [
       { label: "Express 5", type: "framework" },
       { label: "JavaScript", type: "language" },
@@ -287,7 +282,7 @@ const projects = [
     slug: "dreasneedleworks",
     domain: "dreasneedleworks.com",
     url: "https://dreasneedleworks.com",
-    get description() { return getDescription('dreasneedleworks'); },
+    get description() { return getLocalized(projectDescriptions, 'dreasneedleworks'); },
     tech: [
       { label: "HTML", type: "language" },
       { label: "CSS", type: "language" },
@@ -308,6 +303,26 @@ const icons = {
 };
 
 /* ═══════════════════════════════════════════
+   Shared HTML Helpers
+   ═══════════════════════════════════════════ */
+function renderDemoHtml(project) {
+  if (!project.demo) return '';
+  return `
+    <div class="card-demo">
+      <span class="demo-label">${t('demoAccess')}</span>
+      <div class="demo-creds">
+        <span class="demo-cred"><span class="demo-key">${t('demoUser')}</span> ${project.demo.username}</span>
+        <span class="demo-cred"><span class="demo-key">${t('demoPass')}</span> ${project.demo.password}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderTechPills(project) {
+  return project.tech.map(tc => `<span class="tech-pill ${tc.type}">${tc.label}</span>`).join('');
+}
+
+/* ═══════════════════════════════════════════
    Site Preview — iframe embed logic
    ═══════════════════════════════════════════ */
 function createSitePreview(project, container, { scrollable = false, maxHeight = 240 } = {}) {
@@ -324,14 +339,10 @@ function createSitePreview(project, container, { scrollable = false, maxHeight =
     } else {
       // For card previews, scale iframe height to fill the container
       const isInCard = container.closest('.project-card');
-      let iframeHeight;
-      if (scrollable && state.containerHeight && state.scale) {
-        iframeHeight = Math.round(state.containerHeight / state.scale);
-      } else if (isInCard && state.containerHeight && state.scale) {
-        iframeHeight = Math.round(state.containerHeight / state.scale);
-      } else {
-        iframeHeight = IFRAME_H;
-      }
+      const canFillContainer = state.containerHeight && state.scale && (scrollable || isInCard);
+      const iframeHeight = canFillContainer
+        ? Math.round(state.containerHeight / state.scale)
+        : IFRAME_H;
       const pointerEvents = (scrollable && state.interacting) ? 'auto' : 'none';
       const scrolling = (scrollable && state.interacting) ? 'auto' : 'no';
       const overflow = (scrollable && state.interacting) ? 'auto' : 'hidden';
@@ -372,35 +383,19 @@ function createSitePreview(project, container, { scrollable = false, maxHeight =
     }
 
     container.innerHTML = html;
-
-    // Attach event listeners
-    const toggleBtn = container.querySelector('[data-action="toggle"]');
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        state.useFallback = !state.useFallback;
-        render();
-      });
-    }
-
-    const interactOverlay = container.querySelector('[data-action="start-interact"]');
-    if (interactOverlay) {
-      interactOverlay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        state.interacting = true;
-        render();
-      });
-    }
-
-    const stopBtn = container.querySelector('[data-action="stop-interact"]');
-    if (stopBtn) {
-      stopBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        state.interacting = false;
-        render();
-      });
-    }
   }
+
+  // Event delegation — bind once, never re-bind on render
+  container.addEventListener('click', (e) => {
+    const actionEl = e.target.closest('[data-action]');
+    if (!actionEl) return;
+    e.stopPropagation();
+    const action = actionEl.dataset.action;
+    if (action === 'toggle') state.useFallback = !state.useFallback;
+    else if (action === 'start-interact') state.interacting = true;
+    else if (action === 'stop-interact') state.interacting = false;
+    render();
+  });
 
   // ResizeObserver for scaling
   const observer = new ResizeObserver(([entry]) => {
@@ -451,18 +446,6 @@ function renderProjects() {
     card.style.transitionDelay = `${index * 120}ms`;
     card.setAttribute('data-index', String(index + 1).padStart(2, '0'));
 
-    const domain = project.domain;
-
-    const demoHtml = project.demo ? `
-      <div class="card-demo">
-        <span class="demo-label">${t('demoAccess')}</span>
-        <div class="demo-creds">
-          <span class="demo-cred"><span class="demo-key">${t('demoUser')}</span> ${project.demo.username}</span>
-          <span class="demo-cred"><span class="demo-key">${t('demoPass')}</span> ${project.demo.password}</span>
-        </div>
-      </div>
-    ` : '';
-
     const indexNum = String(index + 1).padStart(2, '0');
 
     card.innerHTML = `
@@ -471,8 +454,8 @@ function renderProjects() {
         <div class="card-header">
           <div>
             <div class="card-name">${project.name}</div>
-            <a href="https://${domain}" target="_blank" rel="noopener noreferrer" class="card-domain" onclick="event.stopPropagation()">
-              ${domain}
+            <a href="https://${project.domain}" target="_blank" rel="noopener noreferrer" class="card-domain" onclick="event.stopPropagation()">
+              ${project.domain}
               ${icons.arrowUpRight}
             </a>
           </div>
@@ -481,9 +464,9 @@ function renderProjects() {
           </a>
         </div>
         <p class="card-description">${project.description}</p>
-        ${demoHtml}
+        ${renderDemoHtml(project)}
         <div class="tech-pills">
-          ${project.tech.map(tc => `<span class="tech-pill ${tc.type}">${tc.label}</span>`).join('')}
+          ${renderTechPills(project)}
         </div>
       </div>
       <div class="card-footer">
@@ -509,6 +492,8 @@ function renderProjects() {
    Detail Modal
    ═══════════════════════════════════════════ */
 let modalPreviewInstance = null;
+let modalScrollHandler = null;
+let modalGeneration = 0;
 
 function openModal(project) {
   const overlay = document.getElementById('detail-modal');
@@ -516,7 +501,7 @@ function openModal(project) {
   const info = document.getElementById('modal-info');
 
   // Render info
-  const detailedDesc = getDetailedDescription(project.slug);
+  const detailedDesc = getLocalized(projectDetails, project.slug);
   info.innerHTML = `
     <div class="modal-header-row">
       <div>
@@ -529,17 +514,9 @@ function openModal(project) {
       </a>
     </div>
     <div class="modal-tech-pills">
-      ${project.tech.map(t => `<span class="tech-pill ${t.type}">${t.label}</span>`).join('')}
+      ${renderTechPills(project)}
     </div>
-    ${project.demo ? `
-    <div class="card-demo">
-      <span class="demo-label">${t('demoAccess')}</span>
-      <div class="demo-creds">
-        <span class="demo-cred"><span class="demo-key">${t('demoUser')}</span> ${project.demo.username}</span>
-        <span class="demo-cred"><span class="demo-key">${t('demoPass')}</span> ${project.demo.password}</span>
-      </div>
-    </div>
-    ` : ''}
+    ${renderDemoHtml(project)}
     <div class="modal-detailed">
       <p class="modal-detailed-summary">${detailedDesc.summary}</p>
       <ul class="modal-highlights">
@@ -569,16 +546,16 @@ function openModal(project) {
       hint.classList.remove('hidden');
     }
   };
-  content.addEventListener('scroll', onScroll);
-  content._scrollHandler = onScroll;
+  modalScrollHandler = onScroll;
+  content.addEventListener('scroll', modalScrollHandler);
 }
 
 function closeModal() {
   const overlay = document.getElementById('detail-modal');
   const content = overlay.querySelector('.modal-content');
-  if (content._scrollHandler) {
-    content.removeEventListener('scroll', content._scrollHandler);
-    delete content._scrollHandler;
+  if (modalScrollHandler) {
+    content.removeEventListener('scroll', modalScrollHandler);
+    modalScrollHandler = null;
   }
   overlay.classList.remove('active');
   overlay.setAttribute('aria-hidden', 'true');
@@ -589,8 +566,10 @@ function closeModal() {
     modalPreviewInstance = null;
   }
 
-  // Clean up iframe after transition
+  // Clean up iframe after CSS transition; guard against reopening during delay
+  const gen = ++modalGeneration;
   setTimeout(() => {
+    if (modalGeneration !== gen) return; // Modal was reopened — skip cleanup
     document.getElementById('modal-preview').innerHTML = '';
     document.getElementById('modal-info').innerHTML = '';
   }, 400);
@@ -862,13 +841,18 @@ function initTypingAnimation() {
 /* ═══════════════════════════════════════════
    Scroll Reveal (IntersectionObserver)
    ═══════════════════════════════════════════ */
+let scrollRevealObserver = null;
+
 function initScrollReveal() {
-  const observer = new IntersectionObserver(
+  // Disconnect previous observer to prevent accumulation on re-renders
+  if (scrollRevealObserver) scrollRevealObserver.disconnect();
+
+  scrollRevealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+          scrollRevealObserver.unobserve(entry.target);
         }
       });
     },
@@ -876,7 +860,7 @@ function initScrollReveal() {
   );
 
   document.querySelectorAll('.reveal, .project-card').forEach((el) => {
-    observer.observe(el);
+    scrollRevealObserver.observe(el);
   });
 }
 
@@ -939,10 +923,12 @@ function initParticles() {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  let width, height, particles, animId;
+  let width, height, particles;
   const PARTICLE_COUNT = 60;
   const CONNECTION_DIST = 150;
+  const CONNECTION_DIST_SQ = CONNECTION_DIST * CONNECTION_DIST;
   const MOUSE_DIST = 200;
+  const MOUSE_DIST_SQ = MOUSE_DIST * MOUSE_DIST;
   let mouse = { x: -9999, y: -9999 };
 
   function resize() {
@@ -972,9 +958,10 @@ function initParticles() {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const distSq = dx * dx + dy * dy;
 
-        if (dist < CONNECTION_DIST) {
+        if (distSq < CONNECTION_DIST_SQ) {
+          const dist = Math.sqrt(distSq);
           const alpha = (1 - dist / CONNECTION_DIST) * 0.08;
           ctx.strokeStyle = `rgba(212, 168, 83, ${alpha})`;
           ctx.lineWidth = 0.5;
@@ -988,8 +975,9 @@ function initParticles() {
       // Mouse connection
       const mdx = particles[i].x - mouse.x;
       const mdy = particles[i].y - mouse.y;
-      const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-      if (mDist < MOUSE_DIST) {
+      const mDistSq = mdx * mdx + mdy * mdy;
+      if (mDistSq < MOUSE_DIST_SQ) {
+        const mDist = Math.sqrt(mDistSq);
         const alpha = (1 - mDist / MOUSE_DIST) * 0.15;
         ctx.strokeStyle = `rgba(212, 168, 83, ${alpha})`;
         ctx.lineWidth = 0.6;
@@ -1022,11 +1010,24 @@ function initParticles() {
     }
   }
 
+  let running = true;
+
   function animate() {
+    if (!running) return;
     update();
     draw();
-    animId = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
+
+  // Pause when tab is hidden to save resources
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      running = false;
+    } else {
+      running = true;
+      requestAnimationFrame(animate);
+    }
+  });
 
   resize();
   createParticles();
@@ -1059,11 +1060,16 @@ function initCursorOrb() {
   let orbX = 0, orbY = 0;
   let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
   let isInHero = true;
+  let heroRect = hero.getBoundingClientRect();
+
+  // Recalculate hero bounds only on scroll/resize, not every mousemove
+  const updateHeroRect = () => { heroRect = hero.getBoundingClientRect(); };
+  window.addEventListener('scroll', updateHeroRect, { passive: true });
+  window.addEventListener('resize', updateHeroRect);
 
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    const heroRect = hero.getBoundingClientRect();
     isInHero = e.clientY >= heroRect.top && e.clientY <= heroRect.bottom;
   });
 
@@ -1082,7 +1088,7 @@ function initCursorOrb() {
    ═══════════════════════════════════════════ */
 function initSideNav() {
   const dots = document.querySelectorAll('.side-nav-dot');
-  const sections = ['hero', 'projects', 'contact'];
+  const sections = ['hero', 'about', 'projects', 'contact'];
 
   const observer = new IntersectionObserver(
     (entries) => {
