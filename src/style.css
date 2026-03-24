@@ -522,16 +522,14 @@ a { color: inherit; text-decoration: none; }
 }
 .scroll-indicator:hover { color: var(--gold); }
 
-.scroll-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, var(--gold), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
+.scroll-arrow {
+  opacity: 0.5;
+  animation: scrollBounceHero 1.8s ease-in-out infinite;
 }
 
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(1); }
-  50% { opacity: 0.8; transform: scaleY(1.15); }
+@keyframes scrollBounceHero {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(6px); opacity: 1; }
 }
 
 .scroll-text {
@@ -1723,8 +1721,9 @@ a { color: inherit; text-decoration: none; }
     bottom: 20px;
   }
 
-  .scroll-line {
-    height: 28px;
+  .scroll-arrow {
+    width: 18px;
+    height: 18px;
   }
 
   .scroll-text {
