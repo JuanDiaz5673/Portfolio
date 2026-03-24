@@ -1090,23 +1090,26 @@ function initSideNav() {
   const dots = document.querySelectorAll('.side-nav-dot');
   const sections = ['hero', 'about', 'projects', 'contact'];
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          dots.forEach((d) => d.classList.remove('active'));
-          const dot = document.querySelector(`.side-nav-dot[data-section="${entry.target.id}"]`);
-          if (dot) dot.classList.add('active');
-        }
-      });
-    },
-    { threshold: 0.3 }
-  );
+  // Use scroll position to determine active section — more reliable than
+  // IntersectionObserver for tall sections like projects
+  function updateActiveSection() {
+    const scrollY = window.scrollY + window.innerHeight / 3;
+    let activeId = sections[0];
 
-  sections.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el);
-  });
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) {
+        activeId = id;
+      }
+    }
+
+    dots.forEach((d) => {
+      d.classList.toggle('active', d.dataset.section === activeId);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveSection, { passive: true });
+  updateActiveSection();
 }
 
 // Wait for DOM
